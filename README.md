@@ -18,7 +18,7 @@
 - Firebase
 - creating new users
 - Redux
-- tmdb API
+- tmdb API giving live latest movies
 
 # to be added -
 - dropdown to sign out
