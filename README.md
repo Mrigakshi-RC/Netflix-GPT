@@ -23,3 +23,5 @@
 # to be added -
 - dropdown to sign out
 - replace then with async await
+- make movie infinitely playable
+- removing scrollbars
