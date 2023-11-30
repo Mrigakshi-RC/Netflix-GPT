@@ -19,9 +19,12 @@
 - creating new users
 - Redux
 - tmdb API giving live latest movies
+- multi language for gpt search page
+- GPT
 
 # to be added -
 - dropdown to sign out
 - replace then with async await
 - make movie infinitely playable
 - removing scrollbars
+- video description ellipsis
