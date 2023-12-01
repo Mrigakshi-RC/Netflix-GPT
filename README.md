@@ -31,3 +31,4 @@
 - add next buttons on horizontal scroll sections
 - better neat movie suggestions
 - result on clicking a movie
+- add option to play trailer
