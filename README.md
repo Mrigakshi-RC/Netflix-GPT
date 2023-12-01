@@ -22,9 +22,12 @@
 - multi language for gpt search page
 - GPT
 
-# to be added -
+# to be added by me -
 - dropdown to sign out
 - replace then with async await
 - make movie infinitely playable
 - removing scrollbars
 - video description ellipsis
+- add next buttons on horizontal scroll sections
+- better neat movie suggestions
+- result on clicking a movie
