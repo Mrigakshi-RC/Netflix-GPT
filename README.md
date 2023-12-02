@@ -21,6 +21,7 @@
 - tmdb API giving live latest movies
 - multi language for gpt search page
 - GPT
+- Responsive for mobile
 
 # to be added by me -
 - dropdown to sign out
