@@ -1,3 +1,6 @@
+# A piece of information for the users -
+- To explore the full potential of this application, please do try out the GPT Search feature located in the form of a purple button on the top-right corner of the Homepage.
+
 # Features - 
 - Login/SignUp
     - Sign in/up form
