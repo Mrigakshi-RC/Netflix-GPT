@@ -1,12 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  NOW_PLAYING_MOVIES,
+  POPULAR_MOVIES,
+  TOP_RATED_MOVIES,
+  TRAILER_VIDEO,
+  UPCOMING_MOVIES,
+} from "../constants/initialMovieLists";
 const movieSlice = createSlice({
   name: "movies",
   initialState: {
-    nowPlayingMovies: null,
-    popularMovies: null,
-    topRatedMovies: null,
-    upcomingMovies: null,
-    trailerVideo: null,
+    nowPlayingMovies: NOW_PLAYING_MOVIES,
+    popularMovies: POPULAR_MOVIES,
+    topRatedMovies: TOP_RATED_MOVIES,
+    upcomingMovies: UPCOMING_MOVIES,
+    trailerVideo: TRAILER_VIDEO,
   },
   reducers: {
     addNowPlayingMovies: (state, action) => {

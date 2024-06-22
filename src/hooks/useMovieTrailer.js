@@ -7,17 +7,21 @@ const useMovieTrailer = (movieId) => {
   const dispatch = useDispatch();
   const trailerVideo = useSelector((store) => store.trailerVideo);
   const getMovieVideos = async () => {
-    const data = await fetch(
-      "https://api.themoviedb.org/3/movie/" +
-        movieId +
-        "/videos?language=en-US",
-      API_OPTIONS
-    );
-    const json = await data.json();
-    const trailer =
-      json.results.find((video) => video.type === "Trailer") ||
-      json.results?.[0];
-    dispatch(addTrailerVideo(trailer));
+    try {
+      const data = await fetch(
+        "https://api.themoviedb.org/3/movie/" +
+          movieId +
+          "/videos?language=en-US",
+        API_OPTIONS
+      );
+      const json = await data.json();
+      const trailer =
+        json.results.find((video) => video.type === "Trailer") ||
+        json.results?.[0];
+      dispatch(addTrailerVideo(trailer));
+    } catch (e) {
+      console.error("TMDB API is down");
+    }
   };
   useEffect(() => {
     !trailerVideo && getMovieVideos();
