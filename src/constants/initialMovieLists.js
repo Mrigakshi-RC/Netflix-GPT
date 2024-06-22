@@ -1374,7 +1374,7 @@ const TRAILER_VIDEO = {
   iso_639_1: "en",
   iso_3166_1: "US",
   name: "Official Trailer",
-  key: "Sy6eNs3EW3E",
+  key: "iM150ZWovZM",
   site: "YouTube",
   size: 1080,
   type: "Trailer",
