@@ -1,0 +1,18 @@
+.popover-container {
+  position: relative;
+  display: inline-block;
+}
+
+.popover-content {
+  position: absolute;
+  width: 18rem;
+  background-color: black;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  opacity: 0.8;
+  padding: 10px;
+  z-index: 1;
+  top: -4.2rem;
+  left: -5rem;
+  display: block;
+}

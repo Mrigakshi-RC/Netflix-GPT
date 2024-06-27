@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import openai from "../utils/openai";
 import { API_OPTIONS } from "../utils/constants";
 import { addGptMovieResult } from "../utils/GPTSlice";
+import { Popover } from "../utilComponents/Popover";
 
 const GPTSearchBar = () => {
   const langKey = useSelector((store) => store.config.lang);
@@ -40,10 +41,23 @@ const GPTSearchBar = () => {
       addGptMovieResult({ movieNames: gptMovies, movieResults: tmdbResults })
     );
   };
+
+  const popoverContent = (
+    <div>
+      Please generate or get your key here:{" "}
+      <a
+        href="https://platform.openai.com/account/api-keys"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        platform.openai.com/api-keys
+      </a>
+    </div>
+  );
   return (
     <div className="ptF-[40%] md:pt-[10%] flex justify-center">
       <form
-        className="w-full md:w-1/2 bg-black grid grid-cols-12"
+        className="w-full md:w-1/2 bg-black grid grid-cols-16"
         onSubmit={(e) => {
           e.preventDefault();
         }}
@@ -60,6 +74,20 @@ const GPTSearchBar = () => {
         >
           {lang[langKey].search}
         </button>
+        <div className="col-span-4 flex flex-col justify-center m-4">
+          <div className="text-white flex gap-1 items-center">
+            <div>Enter your API Key</div>
+            <Popover content={popoverContent}>
+              <div className="cursor-pointer text-lg">ⓘ</div>
+            </Popover>
+          </div>
+          <input
+            ref={searchText}
+            type="text"
+            className="p-2 mt-2 h-2/5 w-full"
+            placeholder={lang[langKey].apiKeyPlaceholder}
+          ></input>
+        </div>
       </form>
     </div>
   );
