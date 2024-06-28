@@ -1,7 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import lang from "../utils/languageConstants";
 import { useDispatch, useSelector } from "react-redux";
-import openai from "../utils/openai";
+import { useOpenAI } from "../hooks/useOpenAI";
 import { API_OPTIONS } from "../utils/constants";
 import { addGptMovieResult } from "../utils/GPTSlice";
 import { Popover } from "../utilComponents/Popover";
@@ -10,6 +10,8 @@ const GPTSearchBar = () => {
   const langKey = useSelector((store) => store.config.lang);
   const searchText = useRef(null);
   const dispatch = useDispatch();
+  const [key, setKey] = useState(null);
+  const openai = useOpenAI(key);
 
   const searchMovieTMDB = async (movieName) => {
     const data = await fetch(
@@ -82,10 +84,11 @@ const GPTSearchBar = () => {
             </Popover>
           </div>
           <input
-            ref={searchText}
+            value={key}
             type="text"
             className="p-2 mt-2 h-2/5 w-full"
             placeholder={lang[langKey].apiKeyPlaceholder}
+            onChange={(e) => setKey(e.target.value)}
           ></input>
         </div>
       </form>
