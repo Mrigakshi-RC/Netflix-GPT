@@ -20,4 +20,7 @@ export const SUPPORTED_LANGUAGES = [
   { identifier: "spanish", name: "Spanish" },
 ];
 
-export const OPENAI_KEY = process.env.REACT_APP_OPENAI_KEY;
+// export const OPENAI_KEY = process.env.REACT_APP_OPENAI_KEY;
+export const SET_KEY_ALERT_MESSAGE = "Enter the API Key to get results.";
+export const NO_RESULTS_MESSAGE =
+  "Sorry, we have no results for this particular query.";

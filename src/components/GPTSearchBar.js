@@ -1,15 +1,21 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import lang from "../utils/languageConstants";
 import { useDispatch, useSelector } from "react-redux";
 import { useOpenAI } from "../hooks/useOpenAI";
-import { API_OPTIONS } from "../utils/constants";
+import {
+  API_OPTIONS,
+  NO_RESULTS_MESSAGE,
+  SET_KEY_ALERT_MESSAGE,
+} from "../utils/constants";
 import { addGptMovieResult } from "../utils/GPTSlice";
 import { Popover } from "../utilComponents/Popover";
+import { ToastMessage } from "../utilComponents/ToastMessage";
 
 const GPTSearchBar = () => {
   const langKey = useSelector((store) => store.config.lang);
   const searchText = useRef(null);
   const dispatch = useDispatch();
+  const [showToast, setShowToast] = useState({ show: false, message: "" });
   const [key, setKey] = useState(null);
   const openai = useOpenAI(key);
 
@@ -25,24 +31,48 @@ const GPTSearchBar = () => {
   };
 
   const handleGPTSearchClick = async () => {
+    if (!key) {
+      setShowToast((prev) => ({
+        ...prev,
+        show: true,
+        message: SET_KEY_ALERT_MESSAGE,
+      }));
+      return;
+    }
     const gptQuery =
       "Act as a Movie recommendation system and suggest some movies for the query: " +
       searchText.current.value +
       ". Only give me names of 5 movies, comma separated like the example result given ahead. Example result: Gadar, Sholay, Don, Jawaan, Kabhi Khushi Kabhi Gam";
-    const gptResults = await openai.chat.completions.create({
-      messages: [{ role: "user", content: gptQuery }],
-      model: "gpt-3.5-turbo",
-    });
 
-    if (!gptResults.choices) return; //show a message below
-    const gptMovies = gptResults.choices?.[0]?.message?.content.split(",");
-    const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
-    const tmdbResults = await Promise.all(promiseArray);
-    console.log(tmdbResults);
-    dispatch(
-      addGptMovieResult({ movieNames: gptMovies, movieResults: tmdbResults })
-    );
+    try {
+      const gptResults = await openai.chat.completions.create({
+        messages: [{ role: "user", content: gptQuery }],
+        model: "gpt-3.5-turbo",
+      });
+
+      if (!gptResults.choices) {
+        setShowToast((prev) => ({
+          ...prev,
+          show: true,
+          message: NO_RESULTS_MESSAGE,
+        }));
+        return;
+      }
+      const gptMovies = gptResults.choices?.[0]?.message?.content.split(",");
+      const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
+      const tmdbResults = await Promise.all(promiseArray);
+      console.log(tmdbResults);
+      dispatch(
+        addGptMovieResult({ movieNames: gptMovies, movieResults: tmdbResults })
+      );
+    } catch (e) {
+      setShowToast((prev) => ({ ...prev, show: true, message: e.message }));
+    }
   };
+
+  const setShowToastCallback = useCallback((value) => {
+    setShowToast((prev) => ({ ...prev, show: value }));
+  }, []);
 
   const popoverContent = (
     <div>
@@ -57,42 +87,49 @@ const GPTSearchBar = () => {
     </div>
   );
   return (
-    <div className="ptF-[40%] md:pt-[10%] flex justify-center">
-      <form
-        className="w-full md:w-1/2 bg-black grid grid-cols-16"
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
-        <input
-          ref={searchText}
-          type="text"
-          className="p-4 m-4 col-span-9"
-          placeholder={lang[langKey].gptSearchPlaceholder}
-        ></input>
-        <button
-          className="col-span-3 m-4 py-2 px-4 bg-red-700 text-white rounded-lg"
-          onClick={handleGPTSearchClick}
+    <>
+      <div className="ptF-[40%] md:pt-[10%] flex justify-center">
+        <form
+          className="w-full md:w-1/2 bg-black grid grid-cols-16"
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
         >
-          {lang[langKey].search}
-        </button>
-        <div className="col-span-4 flex flex-col justify-center m-4">
-          <div className="text-white flex gap-1 items-center">
-            <div>Enter your API Key</div>
-            <Popover content={popoverContent}>
-              <div className="cursor-pointer text-lg">ⓘ</div>
-            </Popover>
-          </div>
           <input
-            value={key}
+            ref={searchText}
             type="text"
-            className="p-2 mt-2 h-2/5 w-full"
-            placeholder={lang[langKey].apiKeyPlaceholder}
-            onChange={(e) => setKey(e.target.value)}
+            className="p-4 m-4 col-span-9"
+            placeholder={lang[langKey].gptSearchPlaceholder}
           ></input>
-        </div>
-      </form>
-    </div>
+          <button
+            className="col-span-3 m-4 py-2 px-4 bg-red-700 text-white rounded-lg"
+            onClick={handleGPTSearchClick}
+          >
+            {lang[langKey].search}
+          </button>
+          <div className="col-span-4 flex flex-col justify-center m-4">
+            <div className="text-white flex gap-1 items-center">
+              <div>Enter your API Key</div>
+              <Popover content={popoverContent}>
+                <div className="cursor-pointer text-lg">ⓘ</div>
+              </Popover>
+            </div>
+            <input
+              value={key}
+              type="text"
+              className="p-2 mt-2 h-2/5 w-full"
+              placeholder={lang[langKey].apiKeyPlaceholder}
+              onChange={(e) => setKey(e.target.value)}
+            ></input>
+          </div>
+        </form>
+      </div>
+      <ToastMessage
+        message={showToast.message}
+        showToast={showToast.show}
+        setShowToast={setShowToastCallback}
+      />
+    </>
   );
 };
 
