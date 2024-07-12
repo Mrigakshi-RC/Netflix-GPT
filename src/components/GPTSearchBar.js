@@ -19,15 +19,14 @@ const GPTSearchBar = () => {
   const [key, setKey] = useState(null);
   const openai = useOpenAI(key);
 
-  const searchMovieTMDB = async (movieName) => {
+  const searchMovieOMDB = async (movieName) => {
     const data = await fetch(
-      "https://api.themoviedb.org/3/search/movie?query=" +
-        movieName +
-        "&include_adult=false&include_video=false&language=en-US",
-      API_OPTIONS
+      `http://www.omdbapi.com/?apikey=${
+        process.env.REACT_APP_OMDB_KEY
+      }&t=${encodeURIComponent(movieName)}`
     );
     const json = await data.json();
-    return json.results;
+    return json;
   };
 
   const handleGPTSearchClick = async () => {
@@ -59,7 +58,7 @@ const GPTSearchBar = () => {
         return;
       }
       const gptMovies = gptResults.choices?.[0]?.message?.content.split(",");
-      const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
+      const promiseArray = gptMovies.map((movie) => searchMovieOMDB(movie));
       const tmdbResults = await Promise.all(promiseArray);
       console.log(tmdbResults);
       dispatch(

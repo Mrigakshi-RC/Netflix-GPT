@@ -1,5 +1,6 @@
 import React from "react";
 import MovieCard from "./MovieCard";
+import { IMG_CDN_URL } from "../utils/constants";
 
 const MovieList = ({ title, movies }) => {
   return (
@@ -8,7 +9,10 @@ const MovieList = ({ title, movies }) => {
       <div className="flex overflow-x-scroll scrollbar-hide">
         <div className="flex">
           {movies?.map((movie) => (
-            <MovieCard key={movie.id} posterPath={movie.poster_path} />
+            <MovieCard
+              key={movie.id}
+              posterPath={IMG_CDN_URL + movie.poster_path}
+            />
           ))}
         </div>
       </div>
