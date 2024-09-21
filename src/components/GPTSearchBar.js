@@ -87,39 +87,43 @@ const GPTSearchBar = () => {
   );
   return (
     <>
-      <div className="ptF-[40%] md:pt-[10%] flex justify-center">
+      <div className="pt-[40%] md:pt-[10%] flex justify-center">
         <form
-          className="w-full md:w-1/2 bg-black grid grid-cols-16"
+          className="w-[95%] md:w-1/2 bg-black grid grid-cols-16"
           onSubmit={(e) => {
             e.preventDefault();
           }}
         >
-          <input
-            ref={searchText}
-            type="text"
-            className="p-4 m-4 col-span-9"
-            placeholder={lang[langKey].gptSearchPlaceholder}
-          ></input>
-          <button
-            className="col-span-3 m-4 py-2 px-4 bg-red-700 text-white rounded-lg"
-            onClick={handleGPTSearchClick}
-          >
-            {lang[langKey].search}
-          </button>
-          <div className="col-span-4 flex flex-col justify-center m-4">
-            <div className="text-white flex gap-1 items-center">
-              <div>Enter your API Key</div>
-              <Popover content={popoverContent}>
-                <div className="cursor-pointer text-lg">ⓘ</div>
-              </Popover>
-            </div>
+          <div className="m-4 col-span-10 md:col-span-12 md:flex">
+            <input
+              ref={searchText}
+              type="text"
+              className="p-4 w-full md:w-[70%]"
+              placeholder={lang[langKey].gptSearchPlaceholder}
+            ></input>
+            <button
+              className="col-span-3 m-4 py-2 px-4 bg-red-700 text-white rounded-lg md:w-[30%]"
+              onClick={handleGPTSearchClick}
+            >
+              {lang[langKey].search}
+            </button>
+          </div>
+          <div className="col-span-6 md:col-span-4 flex flex-col justify-center m-4">
             <input
               value={key}
               type="text"
-              className="p-2 mt-2 h-2/5 w-full"
+              className="p-2 h-2/5 w-full"
               placeholder={lang[langKey].apiKeyPlaceholder}
               onChange={(e) => setKey(e.target.value)}
             ></input>
+            <div className="mt-3 text-white flex gap-1 items-center">
+              <div>
+                Enter your API Key{" "}
+                <Popover content={popoverContent}>
+                  <span className="cursor-pointer text-lg">ⓘ</span>
+                </Popover>
+              </div>
+            </div>
           </div>
         </form>
       </div>

@@ -9,7 +9,7 @@ const GPTMovieSuggestions = () => {
 
   return (
     <div className="w-full flex justify-center">
-      <div className="p-10 m-4 bg-black text-white bg-opacity-90 flex justify-center w-fit gap-10">
+      <div className="p-10 m-4 bg-black text-white bg-opacity-90 flex flex-wrap justify-center w-fit gap-10">
         {movieResults.map((movie) => (
           <div>
             <div className="text-lg md:text-3xl py-4 text-white">
